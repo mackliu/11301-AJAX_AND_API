@@ -7,7 +7,33 @@
     <title>jQuery</title>
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-      <!-------引入jQuery函式庫------->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+      .header{
+          text-align: center;
+          color: blue;
+      }
+      .title{
+          text-align: center;
+          color: red;
+      }
+      ul{
+          text-align: left;
+          color: green;
+          list-style-type: none;
+          padding:0;
+
+      }
+      li{
+          margin: 5px;
+          padding:3px;
+
+      }   
+      li:hover{
+          background-color: #f0f0f0;
+          border-bottom:1px solid #ccc;
+      }
+  </style>
 </head>
 <body>
     <h1 class="header">jQuery</h1>
@@ -26,15 +52,25 @@
     ********************************************************/
      
     //利用$.ajax()方法傳送請求並取得回應
-    /* $.ajax(
+    $.ajax(
       {
-        url:'',
-        type:'',
-        success:,
-        error:,
-        complete:
+        url:'https://kktix.com/events.json',
+        type:'get',
+        success:(data)=>{
+          console.log(data);
+        let title=document.querySelector('.title')
+        title.innerHTML=data.title
+        let events=data.entry
+        let ul=document.querySelector('ul')
+        events.forEach((event,idx)=>{
+            let li=document.createElement('li')
+            li.innerHTML=`${idx+1}. ${event.title}`
+            ul.appendChild(li)
+        })
+        },
+
       }
-    ) */   
+    )   
 
     
     //利用$.get()方法傳送請求並取得回應
