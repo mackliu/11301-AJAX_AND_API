@@ -91,7 +91,7 @@ function getClassroomStudents(code){
                       <div class='col-3'>${student.major}</div>
                       <div class='col-2'>
                         <button class='btn btn-info'>編輯</button>
-                        <button class='btn btn-danger'>刪除</button>
+                        <button class='btn btn-danger' onclick='del(${student.id})'>刪除</button>
                       </div>
                     </li>`})
     studentList+='</ul>';
@@ -115,8 +115,10 @@ function update(){
 }
 
 //刪除資料的函式
-function del(){
-
+function del(id){
+$.post("./api/delete.php",{id},function(){
+  getClassroomStudents(101);
+})
 }
 
 </script>
