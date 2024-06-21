@@ -7,7 +7,33 @@
     <title>axios</title>
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <!-----引入axios函式庫------->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"></script>
+    <style>
+        .header{
+            text-align: center;
+            color: blue;
+        }
+        .title{
+            text-align: center;
+            color: red;
+        }
+        ul{
+            text-align: left;
+            color: green;
+            list-style-type: none;
+            padding:0;
+  
+        }
+        li{
+            margin: 5px;
+            padding:3px;
+  
+        }   
+        li:hover{
+            background-color: #f0f0f0;
+            border-bottom:1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
     <h1 class="header">axios</h1>
@@ -25,7 +51,24 @@
 * 4.建立錯誤處理
 ********************************************************/
 
-//發起一個axios請求
+axios.get('https://kktix.com/events.json')
+    .then((response)=>{
+        let data=response.data;
+        let title=document.querySelector('.title')
+        title.innerHTML=data.title
+        let events=data.entry
+        let ul=document.querySelector('ul')
+        events.forEach((event,idx)=>{
+            let li=document.createElement('li')
+            li.innerHTML=`${idx+1}. ${event.title}`
+            ul.appendChild(li)
+        })
+
+        
+    }
+).catch((error)=>{
+    console.log(error);
+})
 
 
 //建立回呼函式(call back function)來處理回應時的各項行為
