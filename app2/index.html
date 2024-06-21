@@ -48,9 +48,9 @@ function getClassrooms(){
   $.get("./api/get_classrooms.php",function(classrooms){
     classrooms=JSON.parse(classrooms);
     classrooms.forEach((classroom)=>{
-      let year=parseInt(classroom.classroom.substr(0,1));
-      let classNumber=parseInt(classroom.classroom.substr(1,2));
-      
+      let year=Math.floor(parseInt(classroom.classroom)/100);
+      let classNumber=parseInt(classroom.classroom)%100;
+
      $("#list").append( `<div class="card classroom-name" style="width: 18rem;">
         <div class="card-body p-5 rounded">
           <a href='Javascript:getClassroomStudents(${classroom.classroom})'>
@@ -67,8 +67,9 @@ function getClassroomList(){
   $.get("./api/get_classrooms.php",function(classrooms){
     classrooms=JSON.parse(classrooms);
     classrooms.forEach((classroom)=>{
-      let year=parseInt(classroom.classroom.substr(0,1));
-      let classNumber=parseInt(classroom.classroom.substr(1,2));
+
+      let year=Math.floor(parseInt(classroom.classroom)/100);
+      let classNumber=parseInt(classroom.classroom)%100;
      $("#classrooms").append( `
           <a href='Javascript:getClassroomStudents(${classroom.classroom})' class='btn btn-success'>
           <h5 class="card-title text-center">${zhNumber[year]}年${zhNumber[classNumber]}班</h5>
