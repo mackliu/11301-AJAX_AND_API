@@ -102,7 +102,7 @@ function getClassroomStudents(code){
                       <div class='col-3'>${student.birthday}</div>
                       <div class='col-3'>${student.major}</div>
                       <div class='col-2'>
-                        <button class='btn btn-info'>編輯</button>
+                        <button class='btn btn-info' onclick='edit(${student.id})'>編輯</button>
                         <button class='btn btn-danger' onclick='del(${student.id})'>刪除</button>
                       </div>
                     </li>`})
@@ -123,9 +123,29 @@ function query(){
 
 }
 
-//編輯資料的函式
-function update(){
+function edit(id){
+  $("#list").load('edit_form.php',{id});
+}
 
+//編輯資料的函式
+function update(id){
+  let form = {
+            id: $("#id").val(),
+            uni_id: $("#uni_id").val(),
+            classroom: $("#classroom").val(),
+            seat_num: $("#seat_num").val(),
+            name: $("#name").val(),
+            birthday: $("#birthday").val(),
+            national_id: $("#national_id").val(),
+            address: $("#address").val(),
+            parent: $("#parent").val(),
+            telphone: $("#telphone").val(),
+            major: $("#major").val(),
+            secondary: $("#secondary").val()
+        }
+        $.post('./api/update.php',form,function(){
+            getClassroomStudents(form.classroom);
+        })
 }
 
 //刪除資料的函式
