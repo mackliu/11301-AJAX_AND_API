@@ -1,79 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新增學生</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
-    <style>
-        .form-label {
-            text-align-last: justify;
-            padding: 5px 10px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h1 class="text-center">新增學生</h1>
-        <form class='form-group mx-auto col-6 mt-5'>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>學號</label>
-                <input class="form-control" type="number" name="uni_id" id="uni_id">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>班級代號</label>
-                <input class="form-control" type="number" name="classroom" id="classroom">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>座號</label>
-                <input class="form-control" type="number" name="seat_num" id="seat_num">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>姓名</label>
-                <input class="form-control" type="text" name="name" id="name">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>生日</label>
-                <input class="form-control" type="date" name="birthday" id="birthday">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>身份證字號</label>
-                <input class="form-control" type="text" name="national_id" id="national_id">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>地址</label>
-                <input class="form-control" type="text" name="address" id="address">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>父母</label>
-                <input class="form-control" type="text" name="parent" id="parent">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>電話</label>
-                <input class="form-control" type="text" name="telphone" id="telphone">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>科系</label>
-                <input class="form-control" type="text" name="major" id="major">
-            </div>
-            <div class='d-flex my-2'>
-                <label for="" class='col-3 form-label'>畢業國中</label>
-                <input class="form-control" type="text" name="secondary" id="secondary">
-            </div>
-            <div>
-                <input type="button" value="送出" class='btn btn-primary' onclick="send()">
-                <input type="reset" value="重置" class='btn btn-warning'>
-            </div>
-        </form>
-
+<h1 class="w-100 text-center">新增學生</h1>
+<form class='form-group mx-auto col-6 mt-5'>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>學號</label>
+        <input class="form-control" type="number" name="uni_id" id="uni_id">
     </div>
-    <script src="./js/jquery-2.1.4.min.js"></script>
-    <script src='./js/bootstrap.js'></script>
-</body>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>班級代號</label>
+        <input class="form-control" type="number" name="classroom" id="classroom">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>座號</label>
+        <input class="form-control" type="number" name="seat_num" id="seat_num">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>姓名</label>
+        <input class="form-control" type="text" name="name" id="name">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>生日</label>
+        <input class="form-control" type="date" name="birthday" id="birthday">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>身份證字號</label>
+        <input class="form-control" type="text" name="national_id" id="national_id">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>地址</label>
+        <input class="form-control" type="text" name="address" id="address">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>父母</label>
+        <input class="form-control" type="text" name="parent" id="parent">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>電話</label>
+        <input class="form-control" type="text" name="telphone" id="telphone">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>科系</label>
+        <input class="form-control" type="text" name="major" id="major">
+    </div>
+    <div class='d-flex my-2'>
+        <label for="" class='col-3 form-label'>畢業國中</label>
+        <input class="form-control" type="text" name="secondary" id="secondary">
+    </div>
+    <div>
+        <input type="button" value="送出" class='btn btn-primary' onclick="send()">
+        <input type="reset" value="重置" class='btn btn-warning'>
+    </div>
+</form>
 
-</html>
+</div>
 <script>
     function send() {
         let form = {
@@ -92,7 +69,7 @@
         $.post("./api/insert.php", form, function(res) {
             if (res == '1') {
                 alert('新增成功')
-                location.href = 'index.html'
+                getClassroomStudents(form.classroom);
             } else {
                 alert('新增失敗')
             }
