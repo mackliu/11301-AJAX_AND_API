@@ -8,6 +8,11 @@
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="./css/bootstrap.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+      .classroom-name:hover{
+        background-color: aqua;
+      }
+    </style>
     <!---匯入要使用的函式庫--->
 
 
@@ -16,6 +21,9 @@
   <main class="container">
     <h1 class="header">學生資料管理系統</h1>
     <button class="btn btn-primary btn-lg my-3" onclick="location.href='add_form.php'">新增學生</button>
+    <div class="d-flex flex-start m-4 flex-wrap" id="list">
+
+    </div>
   </main>
 
 
@@ -32,6 +40,26 @@
 * 4.是否會有回傳值？回傳值的功用及處理？
 * 5.是否需要更新畫面內容？更新畫面的方法？
 ************************************/
+//取得班級資料的函式
+getClassrooms();
+let zhNumber=['','一','二','三','四','五','六','七','八','九','十'];
+function getClassrooms(){
+  $.get("./api/get_classrooms.php",function(classrooms){
+    classrooms=JSON.parse(classrooms);
+    classrooms.forEach((classroom)=>{
+      let year=parseInt(classroom.classroom.substr(0,1));
+      let classNumber=parseInt(classroom.classroom.substr(1,2));
+      
+     $("#list").append( `<div class="card classroom-name" style="width: 18rem;">
+        <div class="card-body p-5 rounded">
+          <a href='Javascript:getClassroomStudents(${classroom.classroom})'>
+          <h5 class="card-title text-center">${zhNumber[year]}年${zhNumber[classNumber]}班</h5>
+          </a>
+        </div>
+    </div>`);
+    })
+  });
+}
 
 
 //新增資料的函式
