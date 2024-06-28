@@ -2,29 +2,157 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJAX & Modal</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>學生資料管理系統</title>
     <link rel="shortcut icon" href="#" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+      .classroom-name:hover{
+        background-color: aqua;
+      }
+      .active{
+        background-color: aqua!important;
+        color:darkgreen!important;
+      }
+      .form-label {
+            text-align-last: justify;
+            padding: 5px 10px;
+        }
+    </style>
+    <!---匯入要使用的函式庫--->
+
+
 </head>
 <body>
-    <h1 class='text-center p-2 m-2'>使用AJAX技術來整合Modal及表單</h1>
-    
+  <main class="container">
+    <h1 class="header">學生資料管理系統</h1>
+    <button class="btn btn-primary btn-lg my-3" onclick="$('#modal').load('add_form.php')">
+        新增學生
+    </button>
+    <div class="d-flex flex-start m-4 flex-wrap" id="list">
 
+    </div>
+  </main>
+  <div id="modal">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
+  </div>
+
+  <script src="./js/jquery-2.1.4.min.js"></script>
+  <script src='./js/bootstrap.js'></script>
 </body>
 </html>
 <script>
-/**
- * 1.使用ajax技術來達到不用跳頁也能傳送表單資料
- * 2.使用ajax技術來更新modal中的資料
-*/
+/************************************
+* 1.考慮觸發行為的事件
+* 2.建立監聽行為
+* 3.考慮是否需要代入參數
+* 4.是否會有回傳值？回傳值的功用及處理？
+* 5.是否需要更新畫面內容？更新畫面的方法？
+************************************/
+//取得班級資料的函式
+let nowClassroom=0;
+getClassrooms();
+let zhNumber=['','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十'];
+function getClassrooms(){
+  $.get("./api/get_classrooms.php",function(classrooms){
+    classrooms=JSON.parse(classrooms);
+    classrooms.forEach((classroom)=>{
+      let year=Math.floor(parseInt(classroom.classroom)/100);
+      let classNumber=parseInt(classroom.classroom)%100;
 
+     $("#list").append( `<div class="card classroom-name" style="width: 18rem;">
+        <div class="card-body p-5 rounded">
+          <a href='Javascript:getClassroomStudents(${classroom.classroom})'>
+          <h5 class="card-title text-center">${zhNumber[year]}年${zhNumber[classNumber]}班</h5>
+          </a>
+        </div>
+    </div>`);
+    })
+  });
+}
+function getClassroomList(){
+ if($("#classrooms").html()!='') return;
 
+  $.get("./api/get_classrooms.php",function(classrooms){
+    classrooms=JSON.parse(classrooms);
+    classrooms.forEach((classroom)=>{
 
+      let year=Math.floor(parseInt(classroom.classroom)/100);
+      let classNumber=parseInt(classroom.classroom)%100;
+     $("#classrooms").append( `
+          <a data-code='${classroom.classroom}' href='Javascript:getClassroomStudents(${classroom.classroom})' class='btn btn-success'>
+          <h5 class="card-title text-center">${zhNumber[year]}年${zhNumber[classNumber]}班</h5>
+          </a>
+        `);
+    })
+  });
+}
+function getClassroomStudents(code){
+  nowClassroom=code;
+  getClassroomList();
+  $.get("./api/get_students.php",{code},function(students){
+    students=JSON.parse(students);
+    let studentList='<ul class="list-group w-100">';
+    students.forEach((student)=>{
+      studentList+=`<li class="list-group-item list-group-item-action d-flex w-100">
+                      <div class='col-1'>${student.seat_num}</div>
+                      <div class='col-3'>${student.name}</div>
+                      <div class='col-3'>${student.birthday}</div>
+                      <div class='col-3'>${student.major}</div>
+                      <div class='col-2'>
+                        <button class='btn btn-info' onclick='edit(${student.id})'>編輯</button>
+                        <button class='btn btn-danger' onclick='del(${student.id})'>刪除</button>
+                      </div>
+                    </li>`})
+    studentList+='</ul>';
+    $("#list").html(studentList);
+    $("a.btn-success").removeClass("active");
+    $(`a[data-code='${code}']`).addClass("active");
+  });
+}
+
+//新增資料的函式
+function create(){
+
+}
+
+//查詢資料的函式
+function query(){
+
+}
+
+function edit(id){
+  $("#list").load('edit_form.php',{id});
+}
+
+//編輯資料的函式
+function update(id){
+  let form = {
+            id: $("#id").val(),
+            uni_id: $("#uni_id").val(),
+            classroom: $("#classroom").val(),
+            seat_num: $("#seat_num").val(),
+            name: $("#name").val(),
+            birthday: $("#birthday").val(),
+            national_id: $("#national_id").val(),
+            address: $("#address").val(),
+            parent: $("#parent").val(),
+            telphone: $("#telphone").val(),
+            major: $("#major").val(),
+            secondary: $("#secondary").val()
+        }
+        $.post('./api/update.php',form,function(){
+            getClassroomStudents(form.classroom);
+        })
+}
+
+//刪除資料的函式
+function del(id){
+$.post("./api/delete.php",{id},function(){
+  getClassroomStudents(nowClassroom);
+})
+}
 
 </script>
